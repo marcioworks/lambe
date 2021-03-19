@@ -1,48 +1,51 @@
 import React from 'react'
-import {createBottomTabNavigator} from 'react-navigation'
-// import {createBottomTabNavigator} from 'react-navigation'
-// import {createBottomTabNavigator} from 'react-navigation-tabs'
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Icon from 'react-native-vector-icons/FontAwesome'
-
 import Feed from './screens/Feed'
 
-const MenusRoutes ={
-  Feed:{
-    name:'Feed',
-    screen: Feed,
-    navigationOptions:{
-      title:'Feed',
-      tabBarIcon: ({tintColor})=>
-        <Icon name='home' size={30} color={tintColor} />
-      
-    }
-  },
-  Add:{
-    name: 'AddPhoto',
-    screen: Feed,
-    navigationOptions:{
-      title: 'Add Picture',
-      tabBarIcon: ({tintColor}) =>
-        <Icon name='camera' size={30} color={tintColor} />
-    }
-  },
-  profile:{
-    name: 'Profile',
-    screen: Feed,
-    navigationOptions:{
-      title: 'Profile',
-      tabBarIcon: ({tintColor}) =>
-        <Icon name='user' size={30} color={tintColor} />
-    }
-  }
-}
+const Tab = createBottomTabNavigator()
 
-const MenuConfig ={
-  initialRouteName:'Feed',
-  tabBarOptions:{
-    showLabel: false
-  }
-}
+export default props => (
+  <NavigationContainer>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          switch (route.name) {
+            case 'Feed':
+              iconName = focused
+                ? 'home'
+                : 'home'
 
-const MenuNavigator = createBottomTabNavigator(MenusRoutes,MenuConfig)
-export default MenuNavigator
+              break;
+            case 'Photos':
+              iconName = focused
+                ? 'camera'
+                : 'camera'
+              break;
+            case 'User':
+              iconName = focused
+                ? 'user'
+                : 'user'
+              break;
+          }
+          // You can return any component that you like here!
+          return <Icon name={iconName} size={size} color={color} />
+        },
+
+
+      })}
+      tabBarOptions = {{
+      activeTintColor: 'blue',
+      inactiveTincolor: 'grey',
+      showLabel:false,
+      // labelStyle: { fontSize: 30 }
+    }} initialRouteName='Feed' >
+    <Tab.Screen name="Feed" component={Feed} />
+    <Tab.Screen name="Photos" component={Feed} />
+    <Tab.Screen name="User" component={Feed} />
+    </Tab.Navigator>
+  </NavigationContainer >
+)
+
